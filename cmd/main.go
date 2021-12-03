@@ -15,6 +15,9 @@ type (
 func main() {
 	e := events.NewEventsManager(log.Default())
 
+	// prints:
+	// 1 One
+	// aaa
 	e.Subscribe("one-create", func(target interface{}, data events.Map) error {
 		t := target.(*One)
 		println(t.Id, t.Name)
@@ -24,6 +27,9 @@ func main() {
 		return nil
 	})
 
+	// prints:
+	// 1 One
+	// bbb
 	e.Subscribe("one-create", func(target interface{}, data events.Map) error {
 		t := target.(*One)
 		println(t.Id, t.Name)
