@@ -8,26 +8,19 @@ import (
 var ErrMissingKey = errors.New("key not found")
 
 type (
-	Logger interface {
-		Fatal(v ...interface{})
-		Fatalf(format string, v ...interface{})
-	}
-
 	Map map[string]interface{}
 
 	Handler func(target interface{}, data Map) error
 
 	Events struct {
 		hm  map[string][]Handler
-		log Logger
 		rwm *sync.RWMutex
 	}
 )
 
-func NewEventsManager(logger Logger) *Events {
+func NewEventsManager() *Events {
 	return &Events{
 		hm: make(map[string][]Handler),
-		log: logger,
 		rwm: new(sync.RWMutex),
 	}
 }
