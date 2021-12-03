@@ -36,19 +36,19 @@ func (e *Events) Subscribe(key string, handler Handler)  {
 	e.hm[key] = append(e.hm[key], handler)
 }
 
-func (e *Events) Dispatch(key string, target interface{}, data Map) error {
+func (e *Events) Dispatch(key string, target interface{}, data Map) (Map, error) {
 	e.rwm.RLock()
 	defer e.rwm.RUnlock()
 
 	if _, ok := e.hm[key]; !ok {
-		return ErrMissingKey
+		return nil, ErrMissingKey
 	}
 
 	for _, handler := range e.hm[key] {
 		if err := handler(target, data); err != nil {
-			return err
+			return nil, err
 		}
 	}
 
-	return nil
+	return data, nil
 }
